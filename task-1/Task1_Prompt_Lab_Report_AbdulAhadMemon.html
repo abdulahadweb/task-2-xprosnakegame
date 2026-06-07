@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 1: AI Prompting Lab Report - Abdul Ahad Memon</title>
+    <!-- Tailwind CSS Engine -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Professional Modern Legibility Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a;
+        }
+        .academic-header {
+            font-family: 'Cinzel', serif;
+        }
+        /* Enterprise Print Overrides to enforce flawless multi-page PDF generation */
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin: 20mm 15mm 20mm 15mm;
+            }
+            html, body {
+                background: #ffffff !important;
+                color: #0f172a !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .report-container {
+                max-width: 100% !important;
+                width: 100% !important;
+                box-shadow: none !important;
+                border: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            .section-panel {
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+                border-bottom: 1px solid #e2e8f0 !important;
+                margin-bottom: 2rem !important;
+                padding-bottom: 2rem !important;
+            }
+            .exercise-row {
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+                background-color: #f8fafc !important;
+                border: 1px solid #e2e8f0 !important;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen py-6 px-4 sm:px-6 lg:px-8">
+
+    <!-- Global Interface Navigation Dock (Omitted during PDF spooling) -->
+    <div class="no-print w-full max-w-4xl mx-auto mb-6 flex justify-between items-center bg-white border border-slate-200 p-4 rounded-2xl shadow-sm">
+        <div class="flex items-center space-x-3">
+            <div class="w-2 h-2 bg-amber-600 rounded-full shadow-[0_0_8px_rgba(180,83,9,0.4)]"></div>
+            <span class="academic-header text-[11px] font-bold tracking-widest text-slate-500">LAB REPORT PIPELINE ENGINE</span>
+        </div>
+        <button onclick="window.print()" class="academic-header text-[11px] bg-slate-900 hover:bg-slate-800 text-white font-bold px-5 py-2.5 rounded-xl transition transform active:scale-95 shadow-md shadow-slate-900/10 cursor-pointer tracking-wider">
+            🖨️ PRINT REPORT PDF
+        </button>
+    </div>
+
+    <!-- Core Structural Document Sheet -->
+    <article class="report-container w-full max-w-4xl mx-auto bg-white border border-slate-200 rounded-3xl p-8 md:p-14 shadow-xl shadow-slate-200/40">
+        
+        <!-- Header Metadata Module -->
+        <header class="section-panel border-b border-slate-100 pb-8 mb-8 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+            <div>
+                <span class="academic-header text-xs font-bold tracking-widest text-amber-700 block mb-2">// CORE LAB DATA RECORD</span>
+                <h1 class="academic-header text-2xl md:text-3xl font-black text-slate-900 tracking-tight leading-none mb-1">
+                    TASK 1: AI PROMPTING LAB REPORT
+                </h1>
+                <p class="text-xs font-semibold text-slate-400 tracking-wide uppercase mt-1">Panaversity Agentic AI Architect Program</p>
+            </div>
+            <div class="text-left md:text-right bg-slate-50 border border-slate-100 p-4 rounded-xl md:min-w-[240px]">
+                <span class="text-[10px] uppercase font-bold tracking-widest text-slate-400 block mb-0.5">RESEARCH CANDIDATE</span>
+                <span class="text-sm font-bold text-slate-900 block">Abdul Ahad Memon (AAM)</span>
+                <span class="text-[10px] text-slate-400 font-medium mt-1 block border-t border-slate-200/60 pt-1">DATE: June 7, 2026</span>
+            </div>
+        </header>
+
+        <!-- Introduction Module -->
+        <section class="section-panel mb-8">
+            <h2 class="academic-header text-sm font-bold tracking-widest text-amber-700 uppercase mb-3">// Introduction</h2>
+            <p class="text-slate-600 text-sm md:text-base leading-relaxed">
+                The purpose of this lab was to explore advanced prompt engineering techniques and evaluate how variations in context, constraints, and model selection directly impact AI outputs. Through 13 practical exercises, this document captures the hands-on experimentation process of steering language models away from generic responses toward precise, highly contextualized artifacts.
+            </p>
+        </section>
+
+        <!-- Key Learnings Matrix Component -->
+        <section class="section-panel border-t border-slate-100 pt-8 mb-8">
+            <h2 class="academic-header text-sm font-bold tracking-widest text-amber-700 uppercase mb-4">// Key Learnings</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                <div class="bg-slate-50/60 border border-slate-100 p-5 rounded-2xl">
+                    <h3 class="font-bold text-slate-900 text-sm mb-2 border-b border-slate-200 pb-1.5">Context is the Ultimate Lever</h3>
+                    <p class="text-slate-600 text-xs leading-relaxed">Providing strict constraints (e.g., word counts, specific audience preferences, time limits) fundamentally shifts the AI from writing broad, generic text to generating instantly usable deliverables.</p>
+                </div>
+                <div class="bg-slate-50/60 border border-slate-100 p-5 rounded-2xl">
+                    <h3 class="font-bold text-slate-900 text-sm mb-2 border-b border-slate-200 pb-1.5">Code Execution Beats Guessing</h3>
+                    <p class="text-slate-600 text-xs leading-relaxed">Language models suffer from a "silent failure mode" where they confidently hallucinate math or data analysis. Explicitly forcing the AI to write and execute code (like Python scripts for a CSV) guarantees mathematical accuracy.</p>
+                </div>
+                <div class="bg-slate-50/60 border border-slate-100 p-5 rounded-2xl">
+                    <h3 class="font-bold text-slate-900 text-sm mb-2 border-b border-slate-200 pb-1.5">The "Jagged Frontier" of Models</h3>
+                    <p class="text-slate-600 text-xs leading-relaxed">There is no single "best" AI. Different model families possess entirely different training biases and blind spots, making cross-model evaluation critical for high-stakes work.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Prompting Improvements Quote Module -->
+        <section class="section-panel border-t border-slate-100 pt-8 mb-8">
+            <h2 class="academic-header text-sm font-bold tracking-widest text-amber-700 uppercase mb-3">// Prompting Improvements</h2>
+            <blockquote class="border-l-2 border-amber-600 bg-amber-50/5 p-4 rounded-r-xl text-slate-600 text-sm leading-relaxed italic">
+                Throughout the lab, my approach to prompting evolved from single-shot, zero-context questions to structured, multi-step briefs. Initially, asking open-ended questions yielded generic advice. By adopting the "Goal / Input / Output" framework and explicitly defining the role and boundaries of the AI, the quality of the outputs improved drastically. I learned to stop accepting the first draft and instead rely on the brainstorm-iterate loop to refine tone, adjust UI elements, and catch missing evidence.
+            </blockquote>
+        </section>
+
+        <!-- Methodological Techniques Module -->
+        <section class="section-panel border-t border-slate-100 pt-8 mb-8">
+            <h2 class="academic-header text-sm font-bold tracking-widest text-amber-700 uppercase mb-4">// Techniques Used</h2>
+            <div class="space-y-3">
+                <div class="flex gap-4 p-4 rounded-xl border border-slate-100 bg-slate-50/30">
+                    <div class="academic-header font-black text-amber-700 text-sm">01</div>
+                    <div>
+                        <h4 class="font-bold text-sm text-slate-900 mb-0.5">Iterative Refinement</h4>
+                        <p class="text-xs text-slate-500 leading-relaxed">Using initial AI outputs as a baseline, providing specific feedback (e.g., "make it warmer," "change the button size"), and prompting for a revised version rather than starting over.</p>
+                    </div>
+                </div>
+                <div class="flex gap-4 p-4 rounded-xl border border-slate-100 bg-slate-50/30">
+                    <div class="academic-header font-black text-amber-700 text-sm">02</div>
+                    <div>
+                        <h4 class="font-bold text-sm text-slate-900 mb-0.5">Cross-Critique</h4>
+                        <p class="text-xs text-slate-500 leading-relaxed">Utilizing a multi-model workflow where Claude reviews ChatGPT's draft (or vice-versa) to expose structural blind spots and missing evidence that a single model family would typically miss.</p>
+                    </div>
+                </div>
+                <div class="flex gap-4 p-4 rounded-xl border border-slate-100 bg-slate-50/30">
+                    <div class="academic-header font-black text-amber-700 text-sm">03</div>
+                    <div>
+                        <h4 class="font-bold text-sm text-slate-900 mb-0.5">Forced Retrieval & Sandboxing</h4>
+                        <p class="text-xs text-slate-500 leading-relaxed">Using trigger words to force live web searches instead of relying on outdated pre-trained memory, and establishing strict "plan, don't act" permissions before allowing an AI to process local files.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Primary Empirical Logging Component -->
+        <section class="section-panel border-t border-slate-100 pt-8">
+            <h2 class="academic-header text-sm font-bold tracking-widest text-amber-700 uppercase mb-6">// Exercise Log & Observations</h2>
+            
+            <!-- Part 1 Panel -->
+            <div class="mb-8">
+                <h3 class="academic-header text-xs font-bold bg-slate-900 text-white px-3 py-1.5 rounded-md inline-block mb-4 tracking-wider">PART 1: HOW AI KNOWS THINGS</h3>
+                <div class="space-y-4">
+                    <div class="exercise-row p-5 rounded-xl border border-slate-100 bg-slate-50/20">
+                        <h4 class="font-bold text-sm text-slate-900 mb-1.5">Exercise 1: Novice vs. Power User</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed">The second answer provided an immediate, ready-to-use email draft instead of just giving a generic checklist of email-writing rules. It directly applied the unique context of a friendly manager relationship, a medical appointment, and a specific timeline shift, making the output instantly useful.</p>
+                    </div>
+                    <div class="exercise-row p-5 rounded-xl border border-slate-100 bg-slate-50/20">
+                        <h4 class="font-bold text-sm text-slate-900 mb-1.5">Exercise 2: Knows vs. Guesses</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed">In Step A, the AI gave a highly confident, accurate breakdown of a static concept because the definitions of a CV and cover letter do not change over time. However, in Step B, because I explicitly added a guardrail telling it not to guess, the AI successfully flagged its own lack of context (missing country data) and explicitly asked for clarification instead of confidently hallucinating a fake legal notice period.</p>
+                    </div>
+                    <div class="exercise-row p-5 rounded-xl border border-slate-100 bg-slate-50/20">
+                        <h4 class="font-bold text-sm text-slate-900 mb-1.5">Exercise 3: The 3 Retrieval Modes</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed">The prompts in Mode 2 and Mode 3 successfully forced the AI to actively search the web. I could tell it searched because the interface explicitly displayed a dynamic "Searching the web" status indicator, and the final responses explicitly included inline source citations linking directly to live web URLs rather than just writing out static text from memory.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Part 2 Panel -->
+            <div class="mb-8">
+                <h3 class="academic-header text-xs font-bold bg-slate-900 text-white px-3 py-1.5 rounded-md inline-block mb-4 tracking-wider">PART 2: TALKING TO AI WELL</h3>
+                <div class="space-y-4">
+                    <div class="exercise-row p-5 rounded-xl border border-slate-100 bg-slate-50/20">
+                        <h4 class="font-bold text-sm text-slate-900 mb-1.5">Exercise 4: Context Is Everything</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed">For the dinner choices, adding the "30-minute" speed constraint and the "non-spicy" rule immediately forced the AI to drop standard desi slow-cooked curries and instead generate fast, mild, yogurt-based alternatives. On the work task, specifying the "4-line status update" and the team's preference for "quick bullet points" completely changed the structure, forcing a short, scannable message instead of a long corporate essay.</p>
+                    </div>
+                    <div class="exercise-row p-5 rounded-xl border border-slate-100 bg-slate-50/20">
+                        <h4 class="font-bold text-sm text-slate-900 mb-1.5">Exercise 5: Think Hard</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed">Adding "think hard" completely changed the depth of the answer because the AI stopped giving generic pros-and-cons lists and actually weighed the trade-offs against my personal values (learning and family time). It produced a much more analytical breakdown, even identifying exact "flip conditions"-like an unexpected financial emergency-where the optimal decision would switch from Offer B to Offer A.</p>
+                    </div>
+                    <div class="exercise-row p-5 rounded-xl border border-slate-100 bg-slate-50/20">
+                        <h4 class="font-bold text-sm text-slate-900 mb-1.5">Exercise 6: Stop the Flattery</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed">Yes, Step B highlighted a strong argument for the office that I hadn't fully considered: the value of "passive mentorship," where junior team members absorb critical problem-solving skills simply by overhearing senior engineers tackle issues live. By shifting from a biased "bait" prompt to a completely neutral comparison, the AI stopped acting as a yes-man and actually brought genuine, objective depth to both sides of the workplace debate.</p>
+                    </div>
+                    <div class="exercise-row p-5 rounded-xl border border-slate-100 bg-slate-50/20">
+                        <h4 class="font-bold text-sm text-slate-900 mb-1.5">Exercise 7: The Brainstorm-Iterate Loop</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed">Yes, the final version was significantly better because Round 1 only gave me generic, rigid templates that felt a bit robotic. By going through the feedback loop in Round 2 and Round 3, the AI was able to soften the tone and strike the exact right balance-sounding genuinely warm and professional without sounding passive-aggressive or annoyed.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Part 3 Panel -->
+            <div class="mb-8">
+                <h3 class="academic-header text-xs font-bold bg-slate-900 text-white px-3 py-1.5 rounded-md inline-block mb-4 tracking-wider">PART 3: BEYOND TEXT</h3>
+                <div class="space-y-4">
+                    <div class="exercise-row p-5 rounded-xl border border-slate-100 bg-slate-50/20">
+                        <h4 class="font-bold text-sm text-slate-900 mb-1.5">Exercise 8: Multimodal - Image & Audio</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed">The AI was surprisingly good at capturing the overall gist and transcribing the main body paragraphs of the handwritten text. However, it struggled with small, chaotic details-it completely misread a few scribbled numbers in the corner and correctly flagged a faded line as [unclear] instead of blindly guessing the words.</p>
+                    </div>
+                    <div class="exercise-row p-5 rounded-xl border border-slate-100 bg-slate-50/20">
+                        <h4 class="font-bold text-sm text-slate-900 mb-1.5">Exercise 9: Build a Small App</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed">Yes, the baseline countdown timer actually worked on the very first try and gave me a functional, clean interface. During the iterate step, I had the AI modify the existing layout directly to make the control buttons much larger, switch the overall color scheme to a calm blue theme, and add a fully working reset button so I could restart the session without refreshing the window.</p>
+                    </div>
+                    <div class="exercise-row p-5 rounded-xl border border-slate-100 bg-slate-50/20">
+                        <h4 class="font-bold text-sm text-slate-900 mb-1.5">Exercise 10: Data Analysis</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed">Round 1 did not run any code; it completely guessed the calculations in a basic text paragraph. I could tell because there was no executable Python block or "Analyzing" tool drop-down displayed, and the resulting numbers were slightly inaccurate compared to Round 2 where forcing the code generated the precise 100% correct math.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Part 4 Panel -->
+            <div>
+                <h3 class="academic-header text-xs font-bold bg-slate-900 text-white px-3 py-1.5 rounded-md inline-block mb-4 tracking-wider">PART 4: WORKING SAFELY & CHOOSING TOOLS</h3>
+                <div class="space-y-4">
+                    <div class="exercise-row p-5 rounded-xl border border-slate-100 bg-slate-50/20">
+                        <h4 class="font-bold text-sm text-slate-900 mb-1.5">Exercise 11: Desktop Apps & Permissions</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed">I would NEVER grant an AI app the permission to permanently delete or overwrite files without a manual confirmation step first. Because deleted files processed by scripts often bypass the recycling bin completely, giving an unproven tool full write/delete permissions on day one risks irreversible data loss if a prompt or edge case glitches.</p>
+                    </div>
+                    <div class="exercise-row p-5 rounded-xl border border-slate-100 bg-slate-50/20">
+                        <h4 class="font-bold text-sm text-slate-900 mb-1.5">Exercise 12: Which Model When</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed">For the professional LinkedIn post, Claude did significantly better because it struck a naturally humble, genuine tone without relying on cringe marketing cliches. ChatGPT felt way too artificial and bloated, stuffing the brief update with excessive emojis and predictable corporate buzzwords that didn't sound like me at all.</p>
+                    </div>
+                    <div class="exercise-row p-5 rounded-xl border border-slate-100 bg-slate-50/20">
+                        <h4 class="font-bold text-sm text-slate-900 mb-1.5">Exercise 13: Models Checking Models</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed">While Tool A focused entirely on general formatting and grammar, Tool B caught a critical structural blind spot that was completely missed-it noticed that the draft lacked specific evidence to back up its main claim. Using the cross-critique workflow proved that different model families have entirely different evaluation priorities, making it easy to spot holes in my writing before finalizing it.</p>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Sheet Sign-off Indicator Footer -->
+        <footer class="mt-12 pt-4 border-t border-slate-100 text-center text-[11px] font-medium text-slate-400 uppercase tracking-widest">
+            Designed by Abdul Ahad Memon (AAM) - Aim Architect.
+        </footer>
+
+    </article>
+
+</body>
+</html>

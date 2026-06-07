@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panaversity Task 3: Orientation Class Transcript Slides</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Variable Architecture for Responsive Theme Flipping */
+        :root {
+            --bg-canvas: #030712;
+            --card-surface: #0f172a;
+            --card-border: rgba(217, 119, 6, 0.2);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent-gold: #d97706;
+            --block-quote-bg: rgba(217, 119, 6, 0.05);
+            --inner-panel: #030712;
+            --inner-border: rgba(51, 65, 85, 0.5);
+            --pulse-glow: drop-shadow(0 0 12px rgba(217, 119, 6, 0.3));
+        }
+
+        body.light-theme {
+            --bg-canvas: #f8fafc;
+            --card-surface: #ffffff;
+            --card-border: rgba(146, 64, 14, 0.25);
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --accent-gold: #92400e;
+            --block-quote-bg: rgba(146, 64, 14, 0.04);
+            --inner-panel: #f1f5f9;
+            --inner-border: #cbd5e1;
+            --pulse-glow: drop-shadow(0 0 8px rgba(146, 64, 14, 0.15));
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-canvas);
+            color: var(--text-primary);
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .academic-header {
+            font-family: 'Cinzel', serif;
+        }
+
+        .presentation-frame {
+            background-color: var(--card-surface);
+            border-color: var(--card-border);
+        }
+
+        .presentation-inner-panel {
+            background-color: var(--inner-panel);
+            border-color: var(--inner-border);
+        }
+
+        /* Ambient Keyframe Core Animations for Neural & Horizon Visuals */
+        @keyframes orbitPulse {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.03); opacity: 1; filter: drop-shadow(0 0 18px var(--accent-gold)); }
+        }
+        @keyframes horizonStretch {
+            0%, 100% { opacity: 0.5; stroke-width: 1px; }
+            50% { opacity: 0.9; stroke-width: 1.5px; }
+        }
+        .ai-lattice-vector {
+            animation: orbitPulse 6s ease-in-out infinite;
+        }
+        .horizon-grid-lines {
+            animation: horizonStretch 4s ease-in-out infinite;
+        }
+
+        /* Advanced Dual-Track PDF Layout Architecture to Stop Hidden Text Disappearing */
+        @media print {
+            @page {
+                size: A4 landscape;
+                margin: 0;
+            }
+            html, body {
+                background-color: #030712 !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            /* Explicitly check if light theme was toggled when print engine handles documentation */
+            body.light-theme {
+                background-color: #ffffff !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .slide-arena {
+                display: block !important;
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            /* Overrides the display engine to force all 11 slides onto the printing spooler concurrently */
+            .slide-card {
+                display: flex !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+                page-break-after: always !important;
+                break-after: page !important;
+                width: 297mm !important;
+                height: 210mm !important;
+                box-sizing: border-box !important;
+                border: none !important;
+                padding: 25mm !important;
+                margin: 0 !important;
+                background-color: #030712 !important;
+                color: #f8fafc !important;
+            }
+            body.light-theme .slide-card {
+                background-color: #ffffff !important;
+                color: #0f172a !important;
+            }
+            
+            /* Enforce strict contrast for text elements inside the compiled PDF file */
+            .slide-card * { color: inherit !important; }
+            .slide-card .academic-header { color: #d97706 !important; }
+            body.light-theme .slide-card .academic-header { color: #92400e !important; }
+            
+            .slide-card blockquote {
+                background-color: rgba(217, 119, 6, 0.05) !important;
+                border-left-color: #d97706 !important;
+            }
+            body.light-theme .slide-card blockquote {
+                background-color: #f8fafc !important;
+                border-left-color: #92400e !important;
+            }
+            .slide-card .theme-inner-card, .slide-card .bg-slate-950, .slide-card .theme-inner-panel, .slide-card .presentation-inner-panel {
+                background-color: #090d16 !important;
+                border-color: #1e293b !important;
+            }
+            body.light-theme .slide-card .theme-inner-card, body.light-theme .slide-card .bg-slate-950, body.light-theme .slide-card .theme-inner-panel, body.light-theme .slide-card .presentation-inner-panel {
+                background-color: #f1f5f9 !important;
+                border-color: #cbd5e1 !important;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between p-4 md:p-8">
+
+    <header class="no-print w-full max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center presentation-frame border rounded-2xl p-5 backdrop-blur-md mb-8 shadow-xl">
+        <div class="flex items-center space-x-4 mb-4 sm:mb-0">
+            <div class="w-2.5 h-2.5 bg-amber-500 rounded-full shadow-[0_0_10px_rgba(234,179,8,0.5)]"></div>
+            <h1 class="academic-header text-xs font-bold tracking-widest text-amber-600 dark:text-amber-500">
+                PANAVERSITY AGENTIC AI ARCHITECT // Orientation Class transcript slides
+            </h1>
+        </div>
+        <div class="flex items-center space-x-4">
+            <button onclick="toggleTheme()" class="presentation-inner-panel p-2.5 border rounded-xl hover:bg-slate-100 dark:hover:bg-slate-900 text-amber-500 transition active:scale-95 cursor-pointer flex items-center justify-center shadow-sm" title="Toggle Visual Mode">
+                <svg id="moonIcon" class="w-5 h-5 block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                <svg id="sunIcon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707M16.243 17.657l.707.707M6.343 6.343l.707-.707M14.25 12a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"></path></svg>
+            </button>
+            <button onclick="window.print()" class="academic-header text-[11px] bg-gradient-to-r from-amber-600 to-amber-500 text-slate-950 font-black px-5 py-3 rounded-xl transition transform hover:scale-[1.02] active:scale-95 shadow-lg shadow-amber-600/10 cursor-pointer tracking-wider">
+                Download PDF
+            </button>
+        </div>
+    </header>
+
+    <main class="slide-arena w-full max-w-6xl mx-auto flex-grow flex flex-col justify-center">
+
+        <div id="slide-1" class="slide-card w-full presentation-frame border rounded-3xl p-8 md:p-16 flex flex-col justify-between min-h-[560px] shadow-2xl">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center flex-grow w-full">
+                <div class="lg:col-span-7 flex flex-col justify-center h-full">
+                    <div class="academic-header text-xs font-bold tracking-widest text-amber-600 dark:text-amber-500 mb-4 uppercase">// SYSTEM MATRIX THESIS</div>
+                    <h2 class="academic-header text-3xl md:text-5xl font-black tracking-tight leading-tight mb-8">
+                        ARCHITECTING THE FUTURE:<br>END-TO-END AGENTIC SYSTEMS
+                    </h2>
+                    <blockquote class="border-l-2 border-amber-500 bg-amber-500/5 px-5 py-3 rounded-r-xl text-sm max-w-4xl italic mb-6">
+                        Objective: Establish academic credentials, program parameters, and formal session presentation boundaries.
+                    </blockquote>
+                </div>
+                
+                <div class="lg:col-span-5 flex justify-center items-center h-full min-h-[220px]">
+                    <svg class="ai-lattice-vector w-full max-w-[280px] aspect-square" viewBox="0 0 200 200" style="filter: var(--pulse-glow);">
+                        <circle cx="100" cy="100" r="85" fill="none" stroke="var(--card-border)" stroke-width="1" stroke-dasharray="4 4" />
+                        <circle cx="100" cy="100" r="60" fill="none" stroke="var(--card-border)" stroke-width="1" />
+                        <path d="M100 25 L50 75 L50 125 L100 175 L150 125 L150 75 Z" fill="none" stroke="var(--accent-gold)" stroke-width="1.5" opacity="0.4" />
+                        <path d="M100 25 L100 175 M50 75 L150 125 M50 125 L150 75" fill="none" stroke="var(--card-border)" stroke-width="1" opacity="0.3" />
+                        <path d="M100 55 L70 100 L100 145 L130 100 Z" fill="none" stroke="var(--accent-gold)" stroke-width="1" opacity="0.6" />
+                        <circle cx="100" cy="25" r="5" fill="var(--bg-canvas)" stroke="var(--text-primary)" stroke-width="2" />
+                        <circle cx="50" cy="75" r="5" fill="var(--bg-canvas)" stroke="var(--accent-gold)" stroke-width="2" />
+                        <circle cx="50" cy="125" r="5" fill="var(--bg-canvas)" stroke="var(--accent-gold)" stroke-width="2" />
+                        <circle cx="100" cy="175" r="5" fill="var(--bg-canvas)" stroke="var(--text-primary)" stroke-width="2" />
+                        <circle cx="150" cy="125" r="5" fill="var(--bg-canvas)" stroke="var(--accent-gold)" stroke-width="2" />
+                        <circle cx="150" cy="75" r="5" fill="var(--bg-canvas)" stroke="var(--accent-gold)" stroke-width="2" />
+                        <circle cx="100" cy="100" r="12" fill="var(--card-surface)" stroke="var(--accent-gold)" stroke-width="3" />
+                        <circle cx="100" cy="100" r="4" fill="var(--text-primary)" />
+                    </svg>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-6 border-t border-slate-800/60 w-full">
+                <div class="presentation-inner-panel border p-4 rounded-xl shadow-inner shadow-black/10">
+                    <span class="text-[10px] uppercase font-bold tracking-widest text-slate-500 block mb-1">Course Assignment Matrix</span>
+                    <span class="text-sm font-semibold">Task 3 Presentation Deliverable</span>
+                </div>
+                <div class="presentation-inner-panel border p-4 rounded-xl shadow-inner shadow-black/10">
+                    <span class="text-[10px] uppercase font-bold tracking-widest text-slate-500 block mb-1">Core Reference Material</span>
+                    <span class="text-sm font-semibold">Orientation Lecture 01 Index</span>
+                </div>
+                <div class="presentation-inner-panel border p-4 rounded-xl text-right sm:text-left shadow-inner shadow-black/10">
+                    <span class="text-[10px] uppercase font-bold tracking-widest text-slate-500 block mb-1">Author Profile</span>
+                    <span class="text-sm font-bold text-amber-600 dark:text-amber-400">Abdul Ahad Memon</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="slide-2" class="slide-card w-full presentation-frame border rounded-3xl p-8 md:p-16 hidden flex flex-col justify-between min-h-[560px] shadow-2xl">
+            <div>
+                <div class="academic-header text-xs font-bold tracking-widest text-amber-600 dark:text-amber-500 mb-4 uppercase">// STRATEGIC PARADIGMS</div>
+                <h2 class="academic-header text-2xl md:text-3xl font-bold tracking-wide border-b border-slate-800 pb-4 mb-6">
+                    THE ANTI-MEDIOCRE MINDSET SHIFT
+                </h2>
+                <blockquote class="border-l-2 border-amber-500 bg-amber-500/5 px-5 py-3 rounded-r-xl text-sm italic mb-6">
+                    Objective: Detail Sir Zia Khan’s core opening philosophy regarding personal academic discipline and shifting performance standards.
+                </blockquote>
+                <ul class="space-y-4 text-sm md:text-base leading-relaxed">
+                    <li class="flex items-start gap-3">
+                        <span class="text-amber-500 mt-1 text-xs">◆</span>
+                        <span><strong>The US Academic Baseline:</strong> Shifting from chronic academic underperformance to successfully navigating 5 distinct concurrent graduate tracks across MIS, Engineering, and Finance.</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="text-amber-500 mt-1 text-xs">◆</span>
+                        <span><strong>The Death of Bounded Skills:</strong> Traditional basic skills (e.g., standard data entry, boilerplate text generation, simple front-end templating) face immediate obsolescence under automated models.</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="text-amber-500 mt-1 text-xs">◆</span>
+                        <span><strong>Startup Collaboration Vectors:</strong> Replaces the traditional corporate employee-employer hierarchy with a flat, open, trust-driven business partnership model between faculty and students.</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="mt-6 bg-slate-950/20 p-3.5 rounded-xl border border-slate-900/10 text-xs text-slate-500">
+                📊 <strong>Visual Layout Schematic:</strong> Asymmetric panel distribution contrasting high-density historical narrative tracks with targeted golden emphasis vectors.
+            </div>
+        </div>
+
+        <div id="slide-3" class="slide-card w-full presentation-frame border rounded-3xl p-8 md:p-16 hidden flex flex-col justify-between min-h-[560px] shadow-2xl">
+            <div>
+                <div class="academic-header text-xs font-bold tracking-widest text-amber-600 dark:text-amber-500 mb-4 uppercase">// EVOLUTIONARY HISTORY</div>
+                <h2 class="academic-header text-2xl md:text-3xl font-bold tracking-wide border-b border-slate-800 pb-4 mb-6">
+                    LEVEL 1: PREDICTIVE INTELLECT (MACHINE LEARNING)
+                </h2>
+                <blockquote class="border-l-2 border-amber-500 bg-amber-500/5 px-5 py-3 rounded-r-xl text-sm italic mb-6">
+                    Objective: Rigorously define the boundaries, mechanics, and limitations of historical statistical learning frameworks.
+                </blockquote>
+                <ul class="space-y-4 text-sm md:text-base leading-relaxed">
+                    <li class="flex items-start gap-3">
+                        <span class="text-amber-500 mt-1 text-xs">◆</span>
+                        <span><strong>Mathematical Boundary Foundations:</strong> Grounded primarily in statistical algorithms, pattern recognition matrices, and static supervised training alignments.</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="text-amber-500 mt-1 text-xs">◆</span>
+                        <span><strong>The Data Volume Dependency Trap:</strong> Demands massive, heavily curated datasets to execute elementary grouping or perform basic categorical filtering.</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="text-amber-500 mt-1 text-xs">◆</span>
+                        <span><strong>Binary Execution Limits:</strong> Bounded strictly to primitive classification actions, such as sorting emails into spam arrays or processing static images for simple Cat vs. Dog verification.</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="mt-6 bg-slate-950/20 p-3.5 rounded-xl border border-slate-900/10 text-xs text-slate-500">
+                📊 <strong>Visual Layout Schematic:</strong> Multi-column structural flowchart detailing information routing from initial ingestion nodes down to isolated categorical endpoints.
+            </div>
+        </div>
+
+        <div id="slide-4" class="slide-card w-full presentation-frame border rounded-3xl p-8 md:p-16 hidden flex flex-col justify-between min-h-[560px] shadow-2xl">
+            <div>
+                <div class="academic-header text-xs font-bold tracking-widest text-amber-600 dark:text-amber-500 mb-4 uppercase">// INDUSTRIAL ARTIFACTS</div>
+                <h2 class="academic-header text-2xl md:text-3xl font-bold tracking-wide border-b border-slate-800 pb-4 mb-6">
+                    LEVEL 2: GENERATIVE AI (THE SMART TOOL ERA)
+                </h2>
+                <blockquote class="border-l-2 border-amber-500 bg-amber-500/5 px-5 py-3 rounded-r-xl text-sm italic mb-6">
+                    Objective: Evaluate the structural design benefits and execution frictions characterizing mainstream Large Language Model tools.
+                </blockquote>
+                <ul class="space-y-4 text-sm md:text-base leading-relaxed">
+                    <li class="flex items-start gap-3">
+                        <span class="text-amber-500 mt-1 text-xs">◆</span>
+                        <span><strong>Semantic Synthesis Ingestion:</strong> Pre-trained on petabyte-scale global internet data to synthesize high-fidelity text records, programming syntax code blocks, and high-resolution frames.</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="text-amber-500 mt-1 text-xs">◆</span>
+                        <span><strong>The Single-Shot Context Barrier:</strong> Constrained within explicit, stateless transactional boundaries that fragment systemic operational continuity.</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="text-amber-500 mt-1 text-xs">◆</span>
+                        <span><strong>Manual Hand-Off Overhead:</strong> Acts purely as a tool (e.g., a motorized drill). The human engineer must handle micro-prompting, copy-pasting, and active text stitching across tabs.</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="mt-6 bg-slate-950/20 p-3.5 rounded-xl border border-slate-900/10 text-xs text-slate-500">
+                📊 <strong>Visual Layout Schematic:</strong> Technical split-screen configuration framing language model synthesis capacities directly against operational transaction overhead.
+            </div>
+        </div>
+
+        <div id="slide-5" class="slide-card w-full presentation-frame border rounded-3xl p-8 md:p-16 hidden flex flex-col justify-between min-h-[560px] shadow-2xl">
+            <div>
+                <div class="academic-header text-xs font-bold tracking-widest text-amber-600 dark:text-amber-500 mb-4 uppercase">// THE AUTONOMOUS SHIFT</div>
+                <h2 class="academic-header text-2xl md:text-3xl font-bold tracking-wide border-b border-slate-800 pb-4 mb-6">
+                    LEVEL 3: AGENTIC SYSTEM DESIGN (THE DIGITAL WORKER)
+                </h2>
+                <blockquote class="border-l-2 border-amber-500 bg-amber-500/5 px-5 py-3 rounded-r-xl text-sm italic mb-6">
+                    Objective: Chart the engineering principles underlying autonomous intent ingestion and goal completion.
+                </blockquote>
+                <ul class="space-y-4 text-sm md:text-base leading-relaxed">
+                    <li class="flex items-start gap-3">
+                        <span class="text-amber-500 mt-1 text-xs">◆</span>
+                        <span><strong>Abstract Objective Ingestion:</strong> Transcends rigid template prompting mechanics to swallow broad, complex business intents (e.g., launching an enterprise commerce hub).</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="text-amber-500 mt-1 text-xs">◆</span>
+                        <span><strong>Decoupled Continuous Flight:</strong> Autonomously configures execution pathways, launches live database exploration channels, and targets terminal deployment endpoints.</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="text-amber-500 mt-1 text-xs">◆</span>
+                        <span><strong>The Specialized Digital FTE:</strong> Transforms the interaction pattern from short chat tab interactions into independent digital employees operating 24/7 without fatigue.</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="mt-6 bg-slate-950/20 p-3.5 rounded-xl border border-slate-900/10 text-xs text-slate-500">
+                📊 <strong>Visual Layout Schematic:</strong> High-end circular workflow diagram displaying data state transformations running seamlessly from abstract intent boundaries down to direct production results.
+            </div>
+        </div>
+
+        <div id="slide-6" class="slide-card w-full presentation-frame border rounded-3xl p-8 md:p-16 hidden flex flex-col justify-between min-h-[560px] shadow-2xl">
+            <div>
+                <div class="academic-header text-xs font-bold tracking-widest text-amber-600 dark:text-amber-500 mb-4 uppercase">// PIPELINE ORCHESTRATION</div>
+                <h2 class="academic-header text-2xl md:text-3xl font-bold text-slate-100 tracking-wide border-b border-slate-800 pb-4 mb-4">
+                    ANATOMY OF AN AGENTIC LIFECYCLE LOOP
+                </h2>
+                <blockquote class="border-l-2 border-amber-500 bg-amber-500/5 px-5 py-2.5 rounded-r-xl text-sm italic mb-6">
+                    Objective: Deconstruct the internal step-by-step processing lifecycle an agent executes to resolve a high-level business objective.
+                </blockquote>
+                <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 mt-2">
+                    <div class="presentation-inner-panel border p-4 rounded-xl shadow-inner theme-inner-panel">
+                        <div class="academic-header font-bold text-xs text-amber-600 dark:text-amber-400 mb-2">01 // STRATEGIC PLANNING</div>
+                        <p class="text-xs leading-relaxed">Deconstructing wide macro goals into granular, logical task sequences and dependency roadmaps.</p>
+                    </div>
+                    <div class="presentation-inner-panel border p-4 rounded-xl shadow-inner theme-inner-panel">
+                        <div class="academic-header font-bold text-xs text-amber-600 dark:text-amber-400 mb-2">02 // CONTEXTUAL RESEARCH</div>
+                        <p class="text-xs leading-relaxed">Crawling external connections to ingest live web data, removing dependency on stale pre-trained weights.</p>
+                    </div>
+                    <div class="presentation-inner-panel border p-4 rounded-xl shadow-inner theme-inner-panel">
+                        <div class="academic-header font-bold text-xs text-amber-600 dark:text-amber-400 mb-2">03 // CODE SYNTHESIS</div>
+                        <p class="text-xs leading-relaxed">Active generation of code scripts, interface modules, layouts, and system file compilations.</p>
+                    </div>
+                    <div class="presentation-inner-panel border p-4 rounded-xl shadow-inner theme-inner-panel">
+                        <div class="academic-header font-bold text-xs text-amber-600 dark:text-amber-400 mb-2">04 // SELF-CORRECTION</div>
+                        <p class="text-xs leading-relaxed">Evaluating execution logs, verifying code parameters, and recursively fixing compilation errors autonomously.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-6 bg-slate-950/20 p-3.5 rounded-xl border border-slate-900/10 text-xs text-slate-500">
+                📊 <strong>Visual Layout Schematic:</strong> Four-card landscape array tracking automated task execution across precise chronological milestone vectors.
+            </div>
+        </div>
+
+        <div id="slide-7" class="slide-card w-full presentation-frame border rounded-3xl p-8 md:p-16 hidden flex flex-col justify-between min-h-[560px] shadow-2xl">
+            <div>
+                <div class="academic-header text-xs font-bold tracking-widest text-amber-600 dark:text-amber-500 mb-4 uppercase">// TEAM GOVERNANCE ARCHITECTURE</div>
+                <h2 class="academic-header text-2xl md:text-3xl font-bold text-slate-100 tracking-wide border-b border-slate-800 pb-4 mb-6">
+                    THE 10-80-10 DELEGATION FRAMEWORK
+                </h2>
+                <blockquote class="border-l-2 border-amber-500 bg-amber-500/5 px-5 py-3 rounded-r-xl text-sm italic mb-6">
+                    Objective: Detail the operational framework protecting human governance and design authority within automated engineering loops.
+                </blockquote>
+                <div class="flex flex-col space-y-4">
+                    <div class="flex items-center space-x-6 presentation-inner-panel border p-4 rounded-xl shadow-inner theme-inner-card">
+                        <div class="academic-header font-black text-lg text-amber-600 dark:text-amber-500 w-16 text-center tracking-wider">10%</div>
+                        <div class="text-sm"><strong class="text-amber-600 dark:text-amber-400">Direction & Scope Definition:</strong> The human architect builds strict criteria briefings, domain limitations, and explicit guardrails.</div>
+                    </div>
+                    <div class="flex items-center space-x-6 presentation-inner-panel border p-4 rounded-xl shadow-inner theme-inner-card">
+                        <div class="academic-header font-black text-lg text-slate-400 w-16 text-center tracking-wider">80%</div>
+                        <div class="text-sm"><strong class="text-slate-500 dark:text-slate-400">Autonomous Processing Speed:</strong> The agent matrix executes automated source assembly, error collection, and recursive compilation runs.</div>
+                    </div>
+                    <div class="flex items-center space-x-6 presentation-inner-panel border p-4 rounded-xl shadow-inner theme-inner-card">
+                        <div class="academic-header font-black text-lg text-amber-600 dark:text-amber-500 w-16 text-center tracking-wider">10%</div>
+                        <div class="text-sm"><strong class="text-amber-600 dark:text-amber-400">Verification & Ownership:</strong> The human supervisor evaluates execution alignment against original targets, holding ultimate accountability.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-6 bg-slate-950/20 p-3.5 rounded-xl border border-slate-900/10 text-xs text-slate-500">
+                📊 <strong>Visual Layout Schematic:</strong> Horizontal timeline bar using muted slate and polished amber fills to isolate human design from agent processing speed.
+            </div>
+        </div>
+
+        <div id="slide-8" class="slide-card w-full presentation-frame border rounded-3xl p-8 md:p-16 hidden flex flex-col justify-between min-h-[560px] shadow-2xl">
+            <div>
+                <div class="academic-header text-xs font-bold tracking-widest text-amber-600 dark:text-amber-500 mb-4 uppercase">// ENTERPRISE INTERFACES</div>
+                <h2 class="academic-header text-2xl md:text-3xl font-bold text-slate-100 tracking-wide border-b border-slate-800 pb-4 mb-6">
+                    THE PERSONAL AI DELEGATE LAYER (IDENTIC AI)
+                </h2>
+                <blockquote class="border-l-2 border-amber-500 bg-amber-500/5 px-5 py-3 rounded-r-xl text-sm italic mb-6">
+                    Objective: Establish high-scale management architectures that prevent cognitive bottlenecks for enterprise human directors.
+                </blockquote>
+                <ul class="space-y-4 text-sm md:text-base leading-relaxed">
+                    <li class="flex items-start gap-3">
+                        <span class="text-amber-500 mt-1 text-xs">◆</span>
+                        <span><strong>The Management Abstraction Layer:</strong> Human executives never directly coordinate 20 isolated specialized workers. Interaction is restricted to a singular, proxy twin clone interface.</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="text-amber-500 mt-1 text-xs">◆</span>
+                        <span><strong>The Digital Assistant Blueprint:</strong> The primary delegate acts as an automated operations manager, mirroring the user's specific strategic preferences, tones, and boundaries.</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="text-amber-500 mt-1 text-xs">◆</span>
+                        <span><strong>Sub-Agent Grid Coordination:</strong> The high-level clone parses workloads out to lower-level sub-agents (Research, Schedulers, Budgets) via clean, unified internal channels.</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="mt-6 bg-slate-950/20 p-3.5 rounded-xl border border-slate-900/10 text-xs text-slate-500">
+                📊 <strong>Visual Layout Schematic:</strong> Top-down systems architecture diagram showing user interaction routing to a single delegate layer before branching to low-level instances.
+            </div>
+        </div>
+
+        <div id="slide-9" class="slide-card w-full presentation-frame border rounded-3xl p-8 md:p-16 hidden flex flex-col justify-between min-h-[560px] shadow-2xl">
+            <div>
+                <div class="academic-header text-xs font-bold tracking-widest text-amber-600 dark:text-amber-500 mb-4 uppercase">// ECONOMIC SYSTEMS</div>
+                <h2 class="academic-header text-2xl md:text-3xl font-bold text-slate-100 tracking-wide border-b border-slate-800 pb-4 mb-6">
+                    THE COLLAPSE OF TRADITIONAL SOFTWARE ENGINE RUNS
+                </h2>
+                <blockquote class="border-l-2 border-amber-500 bg-amber-500/5 px-5 py-3 rounded-r-xl text-sm italic mb-6">
+                    Objective: Outline the imminent macroeconomic impacts of autonomous workforce scaling on software subscription business models.
+                </blockquote>
+                <ul class="space-y-4 text-sm md:text-base leading-relaxed">
+                    <li class="flex items-start gap-3">
+                        <span class="text-amber-500 mt-1 text-xs">◆</span>
+                        <span><strong>The Legacy SaaS Devastation:</strong> Traditional software seat-licensing modules face massive devaluation as customized agent networks build highly proprietary system logic on-demand.</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="text-amber-500 mt-1 text-xs">◆</span>
+                        <span><strong>The Outcome-Based Pricing Flip:</strong> Corporate invoicing frameworks completely pivot away from standard license models, billing exclusively for verified corporate outcomes.</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="text-amber-500 mt-1 text-xs">◆</span>
+                        <span><strong>FTE Economic Advancements:</strong> Deploying highly tailored digital employee workforces scales development volume exponentially while decreasing overall computing resource costs.</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="mt-6 bg-slate-950/20 p-3.5 rounded-xl border border-slate-900/10 text-xs text-slate-500">
+                📊 <strong>Visual Layout Schematic:</strong> High-density data table contrast tracking the sharp decline of software sheet pricing models against the rapid ascent of agent validation utility.
+            </div>
+        </div>
+
+        <div id="slide-10" class="slide-card w-full presentation-frame border rounded-3xl p-8 md:p-16 hidden flex flex-col justify-between min-h-[560px] shadow-2xl">
+            <div>
+                <div class="academic-header text-xs font-bold tracking-widest text-amber-600 dark:text-amber-500 mb-4 uppercase">// SECURE CORE ARCHITECTURES</div>
+                <h2 class="academic-header text-2xl md:text-3xl font-bold text-slate-100 tracking-wide border-b border-slate-800 pb-4 mb-4">
+                    THE 7 RULES OF AGENTIC DESIGN
+                </h2>
+                <blockquote class="border-l-2 border-amber-500 bg-amber-500/5 px-5 py-2.5 rounded-r-xl text-sm italic mb-4">
+                    Objective: Consolidate the non-negotiable infrastructural mandates required to deploy safe, resilient agent networks.
+                </blockquote>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+                    <div class="presentation-inner-panel border p-3 rounded-lg theme-inner-panel shadow-sm">
+                        <div class="academic-header font-bold text-amber-600 dark:text-amber-400 mb-1">RULE 01</div>
+                        <p class="text-slate-500 dark:text-slate-400 font-medium">Human retains absolute final executive command authority.</p>
+                    </div>
+                    <div class="presentation-inner-panel border p-3 rounded-lg theme-inner-panel shadow-sm">
+                        <div class="academic-header font-bold text-amber-600 dark:text-amber-400 mb-1">RULE 02</div>
+                        <p class="text-slate-500 dark:text-slate-400 font-medium">Every executive layer deployment receives an active proxy twin.</p>
+                    </div>
+                    <div class="presentation-inner-panel border p-3 rounded-lg theme-inner-panel shadow-sm">
+                        <div class="academic-header font-bold text-amber-600 dark:text-amber-400 mb-1">RULE 03</div>
+                        <p class="text-slate-500 dark:text-slate-400 font-medium">Dedicated operational layers oversee agent sub-instance lifecycles.</p>
+                    </div>
+                    <div class="presentation-inner-panel border p-3 rounded-lg theme-inner-panel shadow-sm">
+                        <div class="academic-header font-bold text-amber-600 dark:text-amber-400 mb-1">RULE 04</div>
+                        <p class="text-slate-500 dark:text-slate-400 font-medium">Compute resource engines are balanced perfectly to worker profiles.</p>
+                    </div>
+                    <div class="presentation-inner-panel border p-3 rounded-lg theme-inner-panel shadow-sm">
+                        <div class="academic-header font-bold text-amber-600 dark:text-amber-400 mb-1">RULE 05</div>
+                        <p class="text-slate-500 dark:text-slate-400 font-medium">Data pipelines are grounded inside a live local System of Record.</p>
+                    </div>
+                    <div class="presentation-inner-panel border p-3 rounded-lg theme-inner-panel shadow-sm">
+                        <div class="academic-header font-bold text-amber-600 dark:text-amber-400 mb-1">RULE 06</div>
+                        <p class="text-slate-500 dark:text-slate-400 font-medium">Workforce resource growth is throttled by hard API budgets.</p>
+                    </div>
+                    <div class="presentation-inner-panel border p-3 rounded-lg theme-inner-panel col-span-2 shadow-sm">
+                        <div class="academic-header font-bold text-amber-600 dark:text-amber-400 mb-1">// rule 07 — communications</div>
+                        <p class="text-slate-500 dark:text-slate-400 font-medium">Inter-agent messaging runs on unified internal protocol layers (MCP Axis).</p>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-4 bg-slate-950/20 p-3.5 rounded-xl border border-slate-900/10 text-xs text-slate-500">
+                📊 <strong>Visual Layout Schematic:</strong> Integrated systemic matrix grid boxing independent processing mandates inside bounded control modules.
+            </div>
+        </div>
+
+        <div id="slide-11" class="slide-card w-full presentation-frame border rounded-3xl p-8 md:p-16 hidden flex flex-col justify-between min-h-[560px] shadow-2xl">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center flex-grow w-full">
+                <div class="lg:col-span-7 flex flex-col justify-center h-full">
+                    <div class="academic-header text-xs font-bold tracking-widest text-amber-600 dark:text-amber-500 mb-4 uppercase">// TERMINAL SYNTHESIS MATRIX</div>
+                    <h2 class="academic-header text-2xl md:text-3xl font-bold tracking-wide border-b border-slate-800 pb-4 mb-6">
+                        THE HORIZON: THIS IS JUST A BEGINNING
+                    </h2>
+                    <blockquote class="border-l-2 border-amber-500 bg-amber-500/5 px-5 py-3 rounded-r-xl text-sm italic mb-6">
+                        Thank you for reading. This initialization segment maps the core structural foundation, yet the true agentic architecture roadmap lies open before us.
+                    </blockquote>
+                    <ul class="space-y-4 text-sm md:text-base leading-relaxed text-slate-300">
+                        <li class="flex items-start gap-3">
+                            <span class="text-amber-500 mt-1 text-xs">◆</span>
+                            <span><strong>The Dawn of Computational Agency:</strong> Mastering localized context prompting windows represents only the baseline technical threshold. Genuine platform leverage lies in multi-agent workflow orchestration.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-amber-500 mt-1 text-xs">◆</span>
+                            <span><strong>Ecosystem Scale Dynamics:</strong> True production architectural excellence emerges when standalone models step out of simple text loops and assume full full-time ownership over real-world backend code execution pipelines.</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="lg:col-span-5 flex justify-center items-center h-full min-h-[220px]">
+                    <svg class="w-full max-w-[280px] aspect-square" viewBox="0 0 200 200" style="filter: var(--pulse-glow);">
+                        <line x1="10" y1="130" x2="190" y2="130" stroke="var(--accent-gold)" stroke-width="2" />
+                        <g stroke="var(--card-border)" stroke-width="1" class="horizon-grid-lines">
+                            <line x1="100" y1="50" x2="10" y2="190" />
+                            <line x1="100" y1="50" x2="45" y2="190" />
+                            <line x1="100" y1="50" x2="75" y2="190" />
+                            <line x1="100" y1="50" x2="100" y2="190" />
+                            <line x1="100" y1="50" x2="125" y2="190" />
+                            <line x1="100" y1="50" x2="155" y2="190" />
+                            <line x1="100" y1="50" x2="190" y2="190" />
+                        </g>
+                        <line x1="35" y1="150" x2="165" y2="150" stroke="var(--card-border)" stroke-width="0.75" />
+                        <line x1="20" y1="170" x2="180" y2="170" stroke="var(--card-border)" stroke-width="0.75" />
+                        <line x1="5" y1="185" x2="195" y2="185" stroke="var(--card-border)" stroke-width="0.75" />
+                        <polygon points="85,130 100,50 115,130" fill="none" stroke="var(--accent-gold)" stroke-width="1.5" />
+                        <circle cx="100" cy="50" r="6" fill="var(--bg-canvas)" stroke="var(--text-primary)" stroke-width="2" />
+                        <circle cx="100" cy="50" r="1.5" fill="var(--accent-gold)" />
+                    </svg>
+                </div>
+            </div>
+            <div class="mt-6 bg-slate-950/20 p-3.5 rounded-xl border border-slate-900/10 text-xs text-slate-500 w-full">
+                📊 <strong>Visual Layout Schematic:</strong> Perspective network grid channeling design nodes toward an open visual horizon, modeling programmatic system scaling.
+            </div>
+        </div>
+
+    </main>
+
+    <div class="no-print w-full max-w-6xl mx-auto mt-6 flex justify-between items-center presentation-frame border rounded-2xl p-4 backdrop-blur-sm shadow-md">
+        <button id="prevBtn" onclick="navigateSlide(-1)" class="academic-header text-xs px-5 py-3 bg-slate-800/20 text-slate-400 font-bold rounded-xl border border-slate-700/30 transition cursor-pointer disabled:opacity-20 disabled:cursor-not-allowed" disabled>
+            ◀ PREVIOUS
+        </button>
+        
+        <div class="flex items-center">
+            <span id="slideCounterText" class="academic-header text-xs text-amber-600 dark:text-amber-400 font-bold tracking-widest bg-slate-950/40 px-4 py-2 rounded-xl border border-slate-800/60">SLIDE 01 / 11</span>
+        </div>
+
+        <button id="nextBtn" onclick="navigateSlide(1)" class="academic-header text-xs px-5 py-3 bg-gradient-to-r from-amber-600 to-amber-500 text-slate-950 font-bold rounded-xl transition transform hover:scale-[1.02] cursor-pointer">
+            NEXT SLIDE ▶
+        </button>
+    </div>
+
+    <footer class="no-print w-full max-w-6xl mx-auto text-center py-4 text-[11px] font-medium tracking-wide text-slate-500 uppercase mt-4">
+        Designed by Abdul Ahad Memon (AAM) - Aim Architect.
+    </footer>
+
+    <script>
+        let activeIndex = 1;
+        const maxIndex = 11;
+
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const slideCounterText = document.getElementById('slideCounterText');
+        const moonIcon = document.getElementById('moonIcon');
+        const sunIcon = document.getElementById('sunIcon');
+
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+            if (document.body.classList.contains('light-theme')) {
+                moonIcon.classList.replace('block', 'hidden');
+                sunIcon.classList.replace('hidden', 'block');
+            } else {
+                sunIcon.classList.replace('block', 'hidden');
+                moonIcon.classList.replace('hidden', 'block');
+            }
+        }
+
+        function navigateSlide(direction) {
+            document.getElementById(`slide-${activeIndex}`).classList.add('hidden');
+            
+            activeIndex += direction;
+            if (activeIndex < 1) activeIndex = 1;
+            if (activeIndex > maxIndex) activeIndex = maxIndex;
+
+            document.getElementById(`slide-${activeIndex}`).classList.remove('hidden');
+            slideCounterText.innerText = `SLIDE ${String(activeIndex).padStart(2, '0')} / ${maxIndex}`;
+
+            prevBtn.disabled = (activeIndex === 1);
+            if (activeIndex === maxIndex) {
+                nextBtn.innerText = "FINISH SELECTIONS";
+            } else {
+                nextBtn.innerText = "NEXT SLIDE ▶";
+            }
+        }
+    </script>
+</body>
+</html>
