@@ -5,8 +5,8 @@ import {defineConfig} from 'vite';
 
 export default defineConfig(() => {
   return {
-    // ADD THIS LINE BELOW:
-    base: '/task-2-xprosnakegame/', 
+    // UPDATED LINE: Matches your new GitHub repository name
+    base: '/lecture-2-assignments/', 
     
     plugins: [react(), tailwindcss()],
     resolve: {
