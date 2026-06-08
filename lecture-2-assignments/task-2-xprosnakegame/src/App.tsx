@@ -92,7 +92,7 @@ export default function App() {
 
   // Difficulty Config
   const [difficulty, setDifficulty] = useState<'easy' | 'medium' | 'hard' | 'pro'>('medium');
-  const [customSpeedMs, setCustomSpeedMs] = useState<number>(150); // Slider for easy mode only (100 - 200 ms)
+  const [customSpeedMs, setCustomSpeedMs] = useState<number>(180); // Slider for easy mode only (100 - 250 ms)
 
   // Current session/play stats
   const [score, setScore] = useState(0);
@@ -108,6 +108,7 @@ export default function App() {
   const stageRef = useRef(1);
   const foodsEatenRef = useRef(0);
   const snakeRef = useRef<Point[]>([]);
+  const lastTailRef = useRef<Point | null>(null);
   const dirRef = useRef<Point>({ x: 1, y: 0 });
   const lastDirRef = useRef<Point>({ x: 1, y: 0 });
   const foodRef = useRef<Point>({ x: 5, y: 5 });
@@ -120,12 +121,12 @@ export default function App() {
 
   // Retrieve matching interval
   const getCurrentInterval = useCallback(() => {
-    let baseMs = 130;
+    let baseMs = 150;
     switch (difficulty) {
       case 'easy':
         baseMs = customSpeedMs; break;
       case 'medium':
-        baseMs = 130; break;
+        baseMs = 150; break;
       case 'hard':
         baseMs = 90; break;
       case 'pro':
@@ -241,6 +242,7 @@ export default function App() {
       { x: 4, y: 10 },
       { x: 3, y: 10 }
     ];
+    lastTailRef.current = { x: 2, y: 10 };
     dirRef.current = { x: 1, y: 0 };
     lastDirRef.current = { x: 1, y: 0 };
 
@@ -363,9 +365,16 @@ export default function App() {
       if (head.x < 0 || head.x >= GRID_COLS || head.y < 0 || head.y >= GRID_ROWS) {
         crash = true;
         reason = 'COLLIDED WITH STAGE PERIMETER FRAME!';
-      } else if (snakeRef.current.some(s => s.x === head.x && s.y === head.y)) {
-        crash = true;
-        reason = 'COLLIDED WITH OWN SNAKE SEGMENTS!';
+      } else {
+        const willGrow = (head.x === foodRef.current.x && head.y === foodRef.current.y);
+        const limit = willGrow ? snakeRef.current.length : snakeRef.current.length - 1;
+        for (let i = 0; i < limit; i++) {
+          if (snakeRef.current[i].x === head.x && snakeRef.current[i].y === head.y) {
+            crash = true;
+            reason = 'COLLIDED WITH OWN SNAKE SEGMENTS!';
+            break;
+          }
+        }
       }
 
       if (crash) {
@@ -401,6 +410,7 @@ export default function App() {
       // Check food consumption
       if (head.x === foodRef.current.x && head.y === foodRef.current.y) {
         playSound('eat');
+        lastTailRef.current = null;
         // Spawn yummy text floating up
         floatingTextsRef.current.push({
           x: foodRef.current.x * CELL_SIZE + CELL_SIZE / 2,
@@ -440,7 +450,8 @@ export default function App() {
 
         spawnFood();
       } else {
-        snakeRef.current.pop();
+        const popped = snakeRef.current.pop();
+        if (popped) lastTailRef.current = popped;
       }
     };
 
@@ -534,68 +545,200 @@ export default function App() {
         ctx.restore();
       }
 
-      // Draw glowing segmented Neon Cyan Snake body as a continuous organic tube
-      if (snakeRef.current.length > 0) {
-        ctx.save();
-        ctx.lineCap = 'round';
-        ctx.lineJoin = 'round';
+      // Calculate smooth render points for every segment recursively
+      const renderPoints: Point[] = [];
+      const progress = Math.min(1, movementTimer / currentMs);
+      
+      for (let i = 0; i < snakeRef.current.length; i++) {
+        const currentP = snakeRef.current[i];
+        let oldP: Point;
         
-        ctx.beginPath();
-        for (let i = 0; i < snakeRef.current.length; i++) {
-          const seg = snakeRef.current[i];
-          const segX = seg.x * CELL_SIZE + CELL_SIZE / 2;
-          const segY = seg.y * CELL_SIZE + CELL_SIZE / 2;
-          if (i === 0) ctx.moveTo(segX, segY);
-          else ctx.lineTo(segX, segY);
+        if (i < snakeRef.current.length - 1) {
+          oldP = snakeRef.current[i + 1];
+        } else {
+          oldP = lastTailRef.current || currentP;
         }
         
-        // Outer glowing cyan body
-        ctx.lineWidth = CELL_SIZE - 4;
-        ctx.strokeStyle = '#22d3ee';
-        ctx.shadowBlur = 15;
-        ctx.shadowColor = '#22d3ee';
-        ctx.stroke();
+        renderPoints.push({
+          x: oldP.x + (currentP.x - oldP.x) * progress,
+          y: oldP.y + (currentP.y - oldP.y) * progress
+        });
+      }
 
-        // Inner bright core
-        ctx.lineWidth = CELL_SIZE - 12;
-        ctx.strokeStyle = '#ffffff';
-        ctx.shadowBlur = 5;
-        ctx.shadowColor = '#ffffff';
-        ctx.stroke();
+      // Draw glowing layered realistic Snake body with scales
+      if (renderPoints.length > 0) {
+        ctx.save();
         
-        // Render Snake Head with Real Eyes
-        const head = snakeRef.current[0];
-        const hx = head.x * CELL_SIZE + CELL_SIZE / 2;
-        const hy = head.y * CELL_SIZE + CELL_SIZE / 2;
+        // Create an interpolated path of dense points for overlapping scales
+        const pathPoints: {x: number, y: number, progress: number}[] = [];
         
+        for (let i = renderPoints.length - 2; i >= 0; i--) {
+          const p1 = renderPoints[i + 1]; // Tail side
+          const p2 = renderPoints[i];     // Head side
+          const steps = 6; // Density of scales per segment
+          for (let s = 0; s < steps; s++) {
+             const t = s / steps;
+             const x = p1.x + (p2.x - p1.x) * t;
+             const y = p1.y + (p2.y - p1.y) * t;
+             const globalProgress = 1 - ((i + 1 - t) / (renderPoints.length - 1));
+             pathPoints.push({ x, y, progress: globalProgress });
+          }
+        }
+        // Add the very head point
+        pathPoints.push({ x: renderPoints[0].x, y: renderPoints[0].y, progress: 1 });
+
+        const time = Date.now() * 0.005;
+
+        // Render scales from tail to head
+        for (let i = 0; i < pathPoints.length; i++) {
+          const pt = pathPoints[i];
+          
+          // Width tapering logic (tail is thin, neck is slightly thin, mid is thick)
+          let widthModifier = 1;
+          if (pt.progress < 0.15) {
+            widthModifier = pt.progress / 0.15; // Taper tail
+          } else if (pt.progress > 0.9) {
+            widthModifier = 1 - (pt.progress - 0.9) * 2; // Taper neck slightly
+          }
+          widthModifier = 0.3 + 0.7 * widthModifier; // Minimum thickness
+          
+          const maxRadius = CELL_SIZE * 0.35;
+          const radius = maxRadius * widthModifier;
+          
+          const px = pt.x * CELL_SIZE + CELL_SIZE / 2;
+          const py = pt.y * CELL_SIZE + CELL_SIZE / 2;
+          
+          // Direction for rotation
+          let dx = 0, dy = 0;
+          if (i < pathPoints.length - 1) {
+            dx = pathPoints[i+1].x - pt.x;
+            dy = pathPoints[i+1].y - pt.y;
+          } else if (i > 0) {
+            dx = pt.x - pathPoints[i-1].x;
+            dy = pt.y - pathPoints[i-1].y;
+          }
+          
+          if (Math.abs(dx) < 0.001 && Math.abs(dy) < 0.001) {
+            dx = dirRef.current.x;
+            dy = dirRef.current.y;
+          }
+          
+          const angle = Math.atan2(dy, dx);
+          
+          ctx.save();
+          ctx.translate(px, py);
+          ctx.rotate(angle);
+          
+          // Organic breathing pulse
+          const pulse = Math.sin(time - i * 0.1) * 1.2;
+          const currentRad = Math.max(1.5, radius + pulse);
+          
+          // Outer scale glow for neon factor
+          ctx.shadowBlur = 8;
+          ctx.shadowColor = '#38bdf8'; 
+          
+          // Creative Tech pattern instead of harsh reptilian
+          ctx.fillStyle = i % 2 === 0 ? '#0ea5e9' : '#38bdf8'; 
+          ctx.beginPath();
+          // Scale pointing forward
+          ctx.ellipse(0, 0, currentRad * 1.2, currentRad * 0.75, 0, 0, Math.PI * 2);
+          ctx.fill();
+          
+          // Scale distinct outline
+          ctx.shadowBlur = 0;
+          ctx.lineWidth = 1;
+          ctx.strokeStyle = '#0284c7';
+          ctx.stroke();
+          
+          // Center tech dots instead of a diamond spine
+          if (i % 3 === 0 && pt.progress > 0.1) {
+             ctx.fillStyle = '#e0f2fe';
+             ctx.beginPath();
+             ctx.arc(currentRad * 0.2, 0, currentRad * 0.45, 0, Math.PI * 2);
+             ctx.fill();
+          }
+          
+          ctx.restore();
+        }
+
+        // Render Real Snake Head
+        const h = renderPoints[0];
+        const hx = h.x * CELL_SIZE + CELL_SIZE / 2;
+        const hy = h.y * CELL_SIZE + CELL_SIZE / 2;
+        
+        ctx.save();
         ctx.translate(hx, hy);
         
-        // Rotate head based on direction for eye placement
-        if (lastDirRef.current.x === 1) ctx.rotate(0);
-        else if (lastDirRef.current.x === -1) ctx.rotate(Math.PI);
-        else if (lastDirRef.current.y === 1) ctx.rotate(Math.PI / 2);
-        else if (lastDirRef.current.y === -1) ctx.rotate(-Math.PI / 2);
+        // Smooth rotation facing direction
+        let hdX = dirRef.current.x;
+        let hdY = dirRef.current.y;
+        if (renderPoints.length > 1) {
+           hdX = renderPoints[0].x - renderPoints[1].x;
+           hdY = renderPoints[0].y - renderPoints[1].y;
+           if (Math.abs(hdX) < 0.001 && Math.abs(hdY) < 0.001) {
+              hdX = dirRef.current.x;
+              hdY = dirRef.current.y;
+           }
+        }
+        const hAngle = Math.atan2(hdY, hdX);
+        ctx.rotate(hAngle);
+
+        // Head pulsing
+        const hPulse = Math.sin(time * 2) * 0.5;
+        const hw = CELL_SIZE * 0.45 + hPulse;
+        const hl = CELL_SIZE * 0.55 + hPulse;
+
+        // Cute Playful Tongue
+        const flicker = Math.sin(time * 10);
+        if (flicker > 0) {
+          ctx.strokeStyle = '#f472b6'; // pastel pink
+          ctx.shadowBlur = 6;
+          ctx.shadowColor = '#f472b6';
+          ctx.lineWidth = 2.5;
+          ctx.lineCap = 'round';
+          ctx.beginPath();
+          ctx.moveTo(hl * 0.7, 0);
+          ctx.lineTo(hl * 1.4 + 4 * flicker, 0); // straight little blip
+          ctx.stroke();
+        }
+
+        // Smooth Friendly Head Shape
+        ctx.fillStyle = '#38bdf8';
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = '#0ea5e9';
+        ctx.beginPath();
+        // A nice teardrop / rounded egg shape for the head
+        ctx.ellipse(0, 0, hl * 0.9, hw * 0.8, 0, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Head outline
+        ctx.shadowBlur = 0;
+        ctx.lineWidth = 1.5;
+        ctx.strokeStyle = '#0284c7';
+        ctx.stroke();
+
+        // Big, Cute Friendly Eyes
+        const eyeOff = hw * 0.55;
+        const eyeX = hl * 0.3;
+        const eyeRadius = CELL_SIZE * 0.16;
         
         ctx.shadowBlur = 0;
         
-        // Black outline of the eyes
-        ctx.fillStyle = '#020617';
-        ctx.beginPath();
-        ctx.arc(3, -4, 2.5, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.beginPath();
-        ctx.arc(3, 4, 2.5, 0, Math.PI * 2);
-        ctx.fill();
+        // White sclera
+        ctx.fillStyle = '#ffffff'; 
+        ctx.beginPath(); ctx.arc(eyeX, -eyeOff, eyeRadius, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(eyeX, eyeOff, eyeRadius, 0, Math.PI * 2); ctx.fill();
         
-        // White pupils
+        // Big dark pupils
+        ctx.fillStyle = '#0f172a';
+        ctx.beginPath(); ctx.arc(eyeX + 1, -eyeOff, eyeRadius * 0.65, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(eyeX + 1, eyeOff, eyeRadius * 0.65, 0, Math.PI * 2); ctx.fill();
+
+        // Eye highlights (cute anime effect)
         ctx.fillStyle = '#ffffff';
-        ctx.beginPath();
-        ctx.arc(3.5, -4, 1.2, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.beginPath();
-        ctx.arc(3.5, 4, 1.2, 0, Math.PI * 2);
-        ctx.fill();
-        
+        ctx.beginPath(); ctx.arc(eyeX + 2, -eyeOff - 1.5, eyeRadius * 0.3, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(eyeX + 2, eyeOff - 1.5, eyeRadius * 0.3, 0, Math.PI * 2); ctx.fill();
+
         ctx.restore();
       }
 
@@ -786,8 +929,8 @@ export default function App() {
               <input 
                 type="range"
                 min="100"
-                max="200"
-                step="10"
+                max="250"
+                step="5"
                 value={customSpeedMs}
                 onChange={(e) => setCustomSpeedMs(parseInt(e.target.value))}
                 disabled={difficulty !== 'easy' || gameState === 'playing'}
