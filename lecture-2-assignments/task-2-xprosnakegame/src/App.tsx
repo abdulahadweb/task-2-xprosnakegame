@@ -17,7 +17,11 @@ import {
   Medal,
   Activity,
   ArrowRight,
-  Layers
+  Layers,
+  ChevronUp,
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react';
 
 const GRID_COLS = 20;
@@ -301,6 +305,16 @@ export default function App() {
     setTournamentFinished(false);
     setGameState('menu');
   };
+
+  // Direction handler for on-screen controls
+  const handleDirection = useCallback((dir: 'up'|'down'|'left'|'right') => {
+    if (gameState !== 'playing') return;
+    const d = lastDirRef.current;
+    if (dir === 'up' && d.y === 0) dirRef.current = { x: 0, y: -1 };
+    if (dir === 'down' && d.y === 0) dirRef.current = { x: 0, y: 1 };
+    if (dir === 'left' && d.x === 0) dirRef.current = { x: -1, y: 0 };
+    if (dir === 'right' && d.x === 0) dirRef.current = { x: 1, y: 0 };
+  }, [gameState]);
 
   // Key Event Mapping
   useEffect(() => {
@@ -959,6 +973,36 @@ export default function App() {
                 </div>
               </div>
             )}
+          </div>
+
+          {/* MOBILE D-PAD CONTROLS */}
+          <div className={`w-full flex lg:hidden flex-col items-center gap-2 mt-4 transition-opacity duration-300 ${gameState === 'playing' ? 'opacity-100' : 'opacity-30 pointer-events-none'}`}>
+            <button 
+              onPointerDown={(e) => { e.preventDefault(); handleDirection('up'); }} 
+              className="p-4 bg-[#1e293b]/50 rounded-xl border border-cyan-500/30 active:bg-cyan-500/40 touch-none shadow-[0_0_15px_rgba(34,211,238,0.1)]"
+            >
+              <ChevronUp className="w-8 h-8 text-cyan-400" />
+            </button>
+            <div className="flex gap-16">
+              <button 
+                onPointerDown={(e) => { e.preventDefault(); handleDirection('left'); }} 
+                className="p-4 bg-[#1e293b]/50 rounded-xl border border-cyan-500/30 active:bg-cyan-500/40 touch-none shadow-[0_0_15px_rgba(34,211,238,0.1)]"
+              >
+                <ChevronLeft className="w-8 h-8 text-cyan-400" />
+              </button>
+              <button 
+                onPointerDown={(e) => { e.preventDefault(); handleDirection('right'); }} 
+                className="p-4 bg-[#1e293b]/50 rounded-xl border border-cyan-500/30 active:bg-cyan-500/40 touch-none shadow-[0_0_15px_rgba(34,211,238,0.1)]"
+              >
+                <ChevronRight className="w-8 h-8 text-cyan-400" />
+              </button>
+            </div>
+            <button 
+              onPointerDown={(e) => { e.preventDefault(); handleDirection('down'); }} 
+              className="p-4 bg-[#1e293b]/50 rounded-xl border border-cyan-500/30 active:bg-cyan-500/40 touch-none shadow-[0_0_15px_rgba(34,211,238,0.1)]"
+            >
+              <ChevronDown className="w-8 h-8 text-cyan-400" />
+            </button>
           </div>
         </section>
 
