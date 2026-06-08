@@ -15,13 +15,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Install and Build
+        working-directory: ./task-2-xprosnakegame
         run: |
           npm install
           npm run build
       - name: Upload Artifacts
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './dist'
+          path: './task-2-xprosnakegame/dist'
 
   deploy:
     needs: build
