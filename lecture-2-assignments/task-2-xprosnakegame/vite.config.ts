@@ -5,9 +5,14 @@ import {defineConfig} from 'vite';
 
 export default defineConfig(() => {
   return {
-    // UPDATED LINE: Matches your new GitHub repository name
-    base: '/lecture-2-assignments/', 
+    // 1. Updated base path to include your game folder
+    base: '/lecture-2-assignments/task-2-xprosnakegame/', 
     
+    // 2. Added this build step to put the game inside the subfolder URL
+    build: {
+      outDir: 'dist/task-2-xprosnakegame',
+    },
+
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: {
